@@ -97,7 +97,7 @@ require_once '../../includes/connect_endpoint.php';
 header('Content-Type: application/json; charset=UTF-8');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET") {
-    // ...existing code...
+    // if the parameters are not set, return an error
     $apiKey = $_REQUEST['api_key'] ?? $_REQUEST['apiKey'] ?? null;
     if (!$apiKey) {
         $response = [
@@ -129,6 +129,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
     $stmt->bindValue(':apiKey', $apiKey);
     $result = $stmt->execute();
     $user = $result->fetchArray(SQLITE3_ASSOC);
+
+    // If the user is not found, return an error
     if (!$user) {
         $response = [
             "success" => false,
@@ -352,3 +354,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" || $_SERVER["REQUEST_METHOD"] === "GET
 
 
 ?>
+
